@@ -9,30 +9,34 @@
     />
     <title>Hyukju Studio | Software Development Studio</title>
     <script>
-      tailwind = {
-        config: {
-          darkMode: "class",
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-              },
-              boxShadow: {
-                soft: "0 24px 70px rgba(15, 23, 42, 0.12)",
-              },
+      (function () {
+        const storedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = "dark";
+        } else {
+          document.documentElement.style.colorScheme = "light";
+        }
+      })();
+    </script>
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              soft: "0 24px 70px rgba(15, 23, 42, 0.12)",
             },
           },
         },
       };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      const storedTheme = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-        document.documentElement.classList.add("dark");
-      }
-    </script>
   </head>
   <body class="bg-white text-zinc-950 antialiased dark:bg-zinc-950 dark:text-zinc-50">
     <header class="fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/75">
@@ -235,6 +239,7 @@
       document.getElementById("themeToggle").addEventListener("click", () => {
         const root = document.documentElement;
         const isDark = root.classList.toggle("dark");
+        root.style.colorScheme = isDark ? "dark" : "light";
         localStorage.setItem("theme", isDark ? "dark" : "light");
       });
     </script>
